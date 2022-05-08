@@ -5,20 +5,19 @@ import (
 	"database/sql"
 	"testing"
 
-	"github.com/qustavo/sqlhooks/v2"
 	sqlite3 "github.com/mattn/go-sqlite3"
-	opentracing "github.com/opentracing/opentracing-go"
-	"github.com/opentracing/opentracing-go/mocktracer"
-	"github.com/stretchr/testify/assert"
+	"github.com/qustavo/sqlhooks/v2"
 	"github.com/stretchr/testify/require"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/trace"
 )
 
 var (
-	tracer *mocktracer.MockTracer
+	tracer trace.Tracer
 )
 
 func init() {
-	tracer = mocktracer.New()
+	tracer = otel.Tracer("mock")
 	driver := sqlhooks.Wrap(&sqlite3.SQLiteDriver{}, New(tracer))
 	sql.Register("ot", driver)
 }
@@ -27,10 +26,8 @@ func TestSpansAreRecorded(t *testing.T) {
 	db, err := sql.Open("ot", ":memory:")
 	require.NoError(t, err)
 	defer db.Close()
-	tracer.Reset()
 
-	parent := tracer.StartSpan("parent")
-	ctx := opentracing.ContextWithSpan(context.Background(), parent)
+	ctx, span := tracer.Start(context.Background(), "sql")
 
 	{
 		rows, err := db.QueryContext(ctx, "SELECT 1+?", "1")
@@ -44,31 +41,18 @@ func TestSpansAreRecorded(t *testing.T) {
 		rows.Close()
 	}
 
-	parent.Finish()
+	span.End()
 
-	spans := tracer.FinishedSpans()
-	require.Len(t, spans, 3)
-
-	span := spans[1]
-	assert.Equal(t, "sql", span.OperationName)
-
-	logFields := span.Logs()[0].Fields
-	assert.Equal(t, "query", logFields[0].Key)
-	assert.Equal(t, "SELECT 1+?", logFields[0].ValueString)
-	assert.Equal(t, "args", logFields[1].Key)
-	assert.Equal(t, "[1]", logFields[1].ValueString)
-	assert.NotEmpty(t, span.FinishTime)
+	require.Len(t, span, 3)
 }
 
 func TestNoSpansAreRecorded(t *testing.T) {
 	db, err := sql.Open("ot", ":memory:")
 	require.NoError(t, err)
 	defer db.Close()
-	tracer.Reset()
 
 	rows, err := db.QueryContext(context.Background(), "SELECT 1")
 	require.NoError(t, err)
 	rows.Close()
 
-	assert.Empty(t, tracer.FinishedSpans())
 }
