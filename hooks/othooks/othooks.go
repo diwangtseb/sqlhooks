@@ -17,7 +17,6 @@ func New(tracer trace.Tracer) *Hook {
 }
 
 func (h *Hook) Before(ctx context.Context, query string, args ...interface{}) (context.Context, error) {
-	fmt.Println("caocoacoaocao")
 	ctx, span := h.tracer.Start(ctx, "sql")
 	span.SetAttributes(attribute.Key("query").String(fmt.Sprintf("%v", query)))
 	span.SetAttributes(attribute.Key("args").String(fmt.Sprintf("%v", args)))
