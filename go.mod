@@ -1,4 +1,4 @@
-module github.com/qustavo/sqlhooks/v2
+module github.com/diwangtseb/sqlhooks
 
 go 1.13
 

@@ -6,9 +6,9 @@ import (
 	"log"
 	"time"
 
+	"github.com/diwangtseb/sqlhooks"
+	"github.com/diwangtseb/sqlhooks/hooks/othooks"
 	"github.com/go-sql-driver/mysql"
-	"github.com/qustavo/sqlhooks/v2"
-	"github.com/qustavo/sqlhooks/v2/hooks/othooks"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/exporters/jaeger"

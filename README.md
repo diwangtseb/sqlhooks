@@ -9,7 +9,7 @@ The purpose of sqlhooks is to provide a way to instrument your sql statements, m
 
 # Install
 ```bash
-go get github.com/qustavo/sqlhooks/v2
+go get github.com/diwangtseb/sqlhooks
 ```
 Requires Go >= 1.14.x
 
@@ -32,7 +32,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/qustavo/sqlhooks/v2"
+	"github.com/diwangtseb/sqlhooks"
 	"github.com/mattn/go-sqlite3"
 )
 
@@ -78,7 +78,7 @@ Output should look like:
  go test -bench=. -benchmem
  goos: linux
  goarch: amd64
- pkg: github.com/qustavo/sqlhooks/v2
+ pkg: github.com/diwangtseb/sqlhooks
  cpu: Intel(R) Xeon(R) W-10885M CPU @ 2.40GHz
  BenchmarkSQLite3/Without_Hooks-16                 191196              6163 ns/op             456 B/op         14 allocs/op
  BenchmarkSQLite3/With_Hooks-16                    189997              6329 ns/op             456 B/op         14 allocs/op
@@ -87,5 +87,5 @@ Output should look like:
  BenchmarkPostgres/Without_Hooks-16                 13016             91421 ns/op             401 B/op         10 allocs/op
  BenchmarkPostgres/With_Hooks-16                    12339             94033 ns/op             401 B/op         10 allocs/op
  PASS
- ok      github.com/qustavo/sqlhooks/v2  10.294s
+ ok      github.com/diwangtseb/sqlhooks  10.294s
 ```

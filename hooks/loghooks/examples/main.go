@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"log"
 
-	"github.com/qustavo/sqlhooks/v2"
-	"github.com/qustavo/sqlhooks/v2/hooks/loghooks"
+	"github.com/diwangtseb/sqlhooks"
+	"github.com/diwangtseb/sqlhooks/hooks/loghooks"
 	"github.com/mattn/go-sqlite3"
 )
 

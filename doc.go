@@ -10,7 +10,7 @@
 // 	"fmt"
 // 	"time"
 //
-// 	"github.com/qustavo/sqlhooks/v2"
+// 	"github.com/diwangtseb/sqlhooks"
 // 	"github.com/mattn/go-sqlite3"
 // )
 //

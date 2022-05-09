@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"testing"
 
+	"github.com/diwangtseb/sqlhooks"
 	sqlite3 "github.com/mattn/go-sqlite3"
-	"github.com/qustavo/sqlhooks/v2"
 	"github.com/stretchr/testify/require"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/trace"
